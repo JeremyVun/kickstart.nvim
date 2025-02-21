@@ -18,7 +18,6 @@ vim.o.fixeol = false
 
 -- color scheme
 vim.opt.termguicolors = true
-vim.opt.background = 'dark'
 vim.g.have_nerd_font = true
 
 -- status col

@@ -55,6 +55,10 @@ return {
         --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
         --   },
         -- },
+        -- defaults = {
+        --   wrap_results = true,
+        --   sorting_strategy = "ascending"
+        -- },
         pickers = {
           live_grep = {
             additional_args = function(opts)

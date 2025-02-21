@@ -75,6 +75,5 @@ map('n', '<leader>e', function()
 end, { desc = 'Toggle neotree' })
 
 -- kulala
-map('n', '<leader>rr', function() require('kulala').run() end, { desc = 'Run http request' })
-map('n', '<leader>rh', function() require('kulala').toggle_view() end, { desc = 'Toggle body / header' })
-map('n', '<leader>rc', function() require('kulala').close() end, { desc = 'close http request ui' })
+map('n', '<leader>rr', ":Rest run<cr>", { desc = 'Run http request' })
+map('n', '<leader>re', ":Rest env select", { desc = 'Select rest nvim env' })
