@@ -75,6 +75,18 @@ map('n', '<leader>e', function()
 end, { desc = 'Toggle neotree' })
 
 -- kulala
-map('n', '<leader>rr', function() require('kulala').run() end, { desc = 'Run http request' })
-map('n', '<leader>rh', function() require('kulala').toggle_view() end, { desc = 'Toggle body / header' })
-map('n', '<leader>rc', function() require('kulala').close() end, { desc = 'close http request ui' })
+map('n', '<leader>rr', ':Rest run<cr>', { desc = 'Run http request' })
+map('n', '<leader>re', ':Rest env select<cr>', { desc = 'Select Rest nvim env' })
+-- map('n', '<leader>rc', function() require('kulala').close() end, { desc = 'close http request ui' })
+
+-- copilot
+map('i', '<M-\\>', 'copilot#Accept("\\<C-\\>")', {
+  expr = true,
+  replace_keycodes = false
+})
+vim.g.copilot_no_tab_map = true
+
+-- copilot chat
+map('n', '<leader>cc', ':CopilotChatToggle<cr>', { desc = 'Send selected text to chat' })
+map('v', '<leader>cc', ':CopilotChatReview<cr>', { desc = 'Send selected text to chat' })
+-- - vim.keymap.del('i', '<C-c>')

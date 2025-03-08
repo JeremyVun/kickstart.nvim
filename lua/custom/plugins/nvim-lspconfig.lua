@@ -154,7 +154,9 @@ return {
         jsonls = {},
         marksman = {},
         gopls = {},
-        kotlin_language_server = {},
+        kotlin_language_server = {
+          filetypes = { 'kotlin' }
+        },
         lua_ls = {
           -- cmd = {...},
           -- filetypes = { ...},
