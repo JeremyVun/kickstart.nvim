@@ -39,4 +39,11 @@ return {
       lush(specs)
     end
   }
+
+  -- {
+  --   'cmoscofian/nibble-vim',
+  --   config = function()
+  --     vim.cmd.colorscheme("nibble")
+  --   end
+  -- }
 }

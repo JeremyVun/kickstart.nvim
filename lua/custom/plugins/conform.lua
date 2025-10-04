@@ -35,7 +35,7 @@ return {
         json = { 'biome' },
         javascript = {'biome' },
         xml = { 'xmlformatter' },
-        python = { 'ruff', },
+        python = { 'autopep8', },
         go = { 'goimports' },
       },
     },

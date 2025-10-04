@@ -77,3 +77,12 @@ end, { desc = 'Toggle neotree' })
 -- kulala
 map('n', '<leader>rr', ":Rest run<cr>", { desc = 'Run http request' })
 map('n', '<leader>re', ":Rest env select", { desc = 'Select rest nvim env' })
+
+-- copilot
+-- map('i', '<A-\\>', function()
+--   require("copilot.suggestion").accept()
+-- end, { desc = 'accept copilot suggestion' })
+
+-- copilot chat
+map('n', '<leader>cc', ":CopilotChatToggle<cr>", { desc = 'Open copilot chat' })
+map('v', '<leader>cc', ":CopilotChatReview<cr>", { desc = 'Review selection' })
