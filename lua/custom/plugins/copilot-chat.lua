@@ -18,6 +18,25 @@ return {
           insert = '',
         }
       },
+      tools = {
+        "copilot",
+        "filesystem",
+        "neovim",
+        "time"
+      },
+      prompts = {
+        research = {
+          prompt = "Follow the instructions in research_codebase.md to create a document summarising your research findings. Use the filesystem tools to explore the project as needed",
+          system_prompt = function()
+            local file_path = vim.fn.getcwd() .. '/.prompts/research_codebase.md'
+            if vim.fn.filereadable(file_path) == 0 then
+              return "You are an AI programming assistant."
+            end
+            local file_content = vim.fn.readfile(file_path)
+            return table.concat(file_content, '\n')
+          end
+        }
+      }
     },
     -- See Commands section for default commands if you want to lazy load on them
   },
