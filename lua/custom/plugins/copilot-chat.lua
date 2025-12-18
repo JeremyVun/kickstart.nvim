@@ -7,8 +7,10 @@ return {
     },
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
-      model = "claude-3.7-sonnet",
+      -- model = "claude-sonnet-4.5",
       -- model = "gpt-4.1",
+      model = "gpt-4o",
+      -- model = "raptor-mini",
       chat_autocomplete = false,
       mappings = {
         close = {

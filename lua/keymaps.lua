@@ -86,3 +86,6 @@ map('n', '<leader>re', ":Rest env select", { desc = 'Select rest nvim env' })
 -- copilot chat
 map('n', '<leader>cc', ":CopilotChatToggle<cr>", { desc = 'Open copilot chat' })
 map('v', '<leader>cc', ":CopilotChatReview<cr>", { desc = 'Review selection' })
+
+-- open current file in browser
+map('n', '<leader>fx', ":lua vim.ui.open(vim.fn.expand('%'))<cr>", { desc = 'open file' })

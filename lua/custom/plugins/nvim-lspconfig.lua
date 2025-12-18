@@ -153,7 +153,7 @@ return {
         marksman = {},
         jdtls = {},
         -- kotlin_lsp = {},
-        kotlin_language_server = {},
+        -- kotlin_language_server = {},
         groovyls = {},
         lua_ls = {
           -- cmd = {...},
