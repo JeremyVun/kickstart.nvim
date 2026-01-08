@@ -7,9 +7,9 @@ return {
     },
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
-      -- model = "claude-sonnet-4.5",
+      model = "claude-opus-4.5",
       -- model = "gpt-4.1",
-      model = "gpt-4o",
+      -- model = "gpt-4o",
       -- model = "raptor-mini",
       chat_autocomplete = false,
       mappings = {
@@ -20,9 +20,9 @@ return {
       },
       tools = {
         "copilot",
-        "filesystem",
+        -- "filesystem",
         "neovim",
-        "time"
+        -- "time"
       },
       prompts = {
         research = {
