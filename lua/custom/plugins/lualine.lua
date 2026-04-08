@@ -4,9 +4,9 @@ return {
     lazy = true,
     event = 'VeryLazy',
     dependencies = {
-      {
-        'linrongbin16/lsp-progress.nvim'
-      }
+      -- {
+      --   'linrongbin16/lsp-progress.nvim'
+      -- }
     },
     -- init = function()
     --   vim.g.lualine_laststatus = vim.o.laststatus

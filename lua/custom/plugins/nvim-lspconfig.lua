@@ -152,6 +152,7 @@ return {
         jsonls = {},
         marksman = {},
         jdtls = {},
+        gopls = {},
         -- kotlin_lsp = {},
         -- kotlin_language_server = {},
         groovyls = {},
