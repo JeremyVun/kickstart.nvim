@@ -13,18 +13,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 
 vim.api.nvim_create_autocmd('BufEnter', {
-  pattern = "*",
   callback = function()
     vim.opt.formatoptions = vim.opt.formatoptions - { 'c', 'r', 'o' }
+  end,
+})
 
-    local cwd = string.match(vim.fn.getcwd(), "([^/]+)$")
-    vim.fn.system('wezterm cli set-tab-title "' .. cwd .. '"')
-  end
-});
-
-vim.api.nvim_create_autocmd("FileType",  {
-      pattern = { "json" },
-      callback = function()
-        vim.api.nvim_set_option_value("formatprg", "jq", { scope = 'local' })
-      end,
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'json' },
+  callback = function()
+    vim.api.nvim_set_option_value('formatprg', 'jq', { scope = 'local' })
+  end,
 })

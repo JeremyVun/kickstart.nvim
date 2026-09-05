@@ -23,7 +23,7 @@ return {
         options = {
           theme = 'auto',
           globalstatus = false,
-          disabled_filetypes = { statusline = { 'dashboard', 'alpha', 'starter' } },
+          disabled_filetypes = { statusline = { 'dashboard', 'alpha', 'starter', 'terminal_panel' } },
         },
         sections = {
           lualine_a = { 'mode' },
