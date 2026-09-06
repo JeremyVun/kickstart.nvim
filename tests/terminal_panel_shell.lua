@@ -6,7 +6,18 @@ local panel = require 'terminal_panel'
 panel.setup { auto_open = false, tab_title = false }
 local dir = vim.fn.tempname()
 vim.fn.mkdir(dir .. '/bin', 'p')
-vim.fn.writefile({ 'export PANEL_FIXTURE=normal-startup-preserved', "PS1='fixture> '" }, dir .. '/.zshrc')
+vim.fn.writefile({
+  'export PANEL_FIXTURE=normal-startup-preserved',
+  "PS1='fixture> '",
+  'HISTSIZE=100',
+  'SAVEHIST=0',
+  'bindkey -e',
+  "bindkey '^[[A' history-beginning-search-backward",
+  "bindkey '^[[B' history-beginning-search-forward",
+}, dir .. '/.zshrc')
+vim.fn.writefile({ 'echo panel-prefix-older', 'echo panel-prefix-newer', 'echo unrelated-latest' }, dir .. '/.zsh_history')
+-- Emulate macOS /etc/zshrc's default on platforms without that global file.
+vim.fn.writefile({ 'HISTFILE="$TERMINAL_PANEL_ZDOTDIR/.zsh_history"' }, dir .. '/.zshenv')
 local fake = [[#!/usr/bin/env python3
 import json, os, shlex, subprocess, sys, time
 args = sys.argv[1:]
@@ -49,6 +60,24 @@ assert(
   end),
   'Existing shell initialization preserved'
 )
+vim.fn.chansend(s.job, 'echo panel-prefix-\027[A')
+assert(vim.wait(1500, function()
+  return output():find('fixture> echo panel-prefix-newer', 1, true)
+end), 'Up searches the normal history by prefix')
+vim.fn.chansend(s.job, '\027[A')
+assert(vim.wait(1500, function()
+  return output():find('fixture> echo panel-prefix-older', 1, true)
+end), 'Repeated Up finds the older prefix match')
+vim.fn.chansend(s.job, '\027[B')
+assert(vim.wait(1500, function()
+  local lines = api.nvim_buf_get_lines(s.buf, 0, -1, false)
+  for i = #lines, 1, -1 do
+    if lines[i]:find('fixture>', 1, true) then
+      return lines[i]:find('echo panel-prefix-newer', 1, true) ~= nil
+    end
+  end
+end), 'Down returns to the newer prefix match')
+vim.fn.chansend(s.job, '\021') -- Clear the recalled command before testing launchers.
 for _, source in ipairs { 'codex', 'claude' } do
   vim.fn.chansend(s.job, source .. ' --version\n')
   assert(

@@ -126,8 +126,20 @@ local function preview(s)
 end
 
 local function watch(s)
+  local generation = (s.watch_generation or 0) + 1
+  s.watch_generation = generation
   api.nvim_buf_attach(s.buf, false, {
     on_lines = function()
+      if s.watch_generation ~= generation then
+        return true
+      end
+      if not s.activity_pending then
+        s.activity_pending = true
+        vim.defer_fn(function()
+          s.activity_pending = false
+          M.sync_activity(s.id)
+        end, 50)
+      end
       if preview_pending then
         return
       end
@@ -258,6 +270,24 @@ local function change(s, status)
     s.status, s.changed = status, os.time()
     s.unread = states[status].rank <= 2
     refresh()
+  end
+end
+
+-- Codex's notify bridge reports completion but has no matching start event.
+-- Its live footer supplies positive evidence of work, including auto-resumed
+-- turns and background terminals. Never infer completion from output silence.
+function M.sync_activity(id)
+  local s = sessions[id]
+  if not s or (s.agent or s.kind) ~= 'codex' or not validbuf(s.buf) then
+    return
+  end
+  local count = api.nvim_buf_line_count(s.buf)
+  for _, line in ipairs(api.nvim_buf_get_lines(s.buf, math.max(0, count - 12), count, false)) do
+    line = vim.trim(line)
+    if line:match '^• .+%(.-esc to interrupt%)%s*$' then
+      change(s, 'working')
+      return
+    end
   end
 end
 
@@ -663,10 +693,7 @@ local function bind_terminal(s)
     end)
     return '<CR>'
   end, { buffer = s.buf, expr = true })
-  if not s.watched then
-    s.watched = true
-    watch(s)
-  end
+  watch(s)
 end
 
 -- Loading the prototype into an existing editor should not require stopping
@@ -935,6 +962,7 @@ function M.setup(options)
   M.adopt()
   for _, s in pairs(sessions) do
     bind_terminal(s)
+    M.sync_activity(s.id)
   end
   local function start()
     if opts.auto_open and #api.nvim_list_uis() > 0 then
