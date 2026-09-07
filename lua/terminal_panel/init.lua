@@ -673,16 +673,8 @@ end
 local function bind_terminal(s)
   vim.bo[s.buf].filetype = 'terminal_panel_terminal'
   vim.b[s.buf].terminal_panel_id = s.id
-  for key, direction in pairs { Left = 'h', Right = 'l', Up = 'k', Down = 'j' } do
-    vim.keymap.set(
-      't',
-      '<leader><' .. key .. '>',
-      '<C-\\><C-n><Cmd>lua require("terminal_panel").navigate("' .. direction .. '")<CR>',
-      { buffer = s.buf, silent = true, desc = 'Move to panel' }
-    )
-  end
+  -- No leader-prefixed maps here: a space in terminal mode must reach the shell without waiting on timeoutlen.
   vim.keymap.set('t', '<C-`>', '<C-\\><C-n><Cmd>lua require("terminal_panel").toggle()<CR>', { buffer = s.buf, silent = true })
-  vim.keymap.set('t', '<leader>\\', '<C-\\><C-n><Cmd>lua require("terminal_panel").toggle_panel(true)<CR>', { buffer = s.buf, silent = true })
   -- Input is activity, not proof of an agent working. Claude hooks replace this
   -- with an authoritative state; Codex stays Active until its next notification.
   vim.keymap.set('t', '<CR>', function()

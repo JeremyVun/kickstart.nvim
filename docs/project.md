@@ -22,13 +22,13 @@ exposes the editor. The sidebar can stay collapsed while switching terminals.
 | Control | Action |
 | --- | --- |
 | Enter on **+ New terminal** | Start a shell immediately, with an automatic name |
-| Space + arrows | Move between Neo-tree, terminal and session panel |
+| Space + arrows (normal mode) | Move between Neo-tree, terminal and session panel |
 | Up / Down in session panel | Select a terminal or New |
 | Enter / Right in session panel | Open selection and focus it |
 | Left / Escape in session panel | Return to the centre |
 | Ctrl + backtick | Show/hide the terminal workspace; create a shell if none exist |
 | Number, then Ctrl + backtick (normal mode) | Open/create that numbered terminal; toggle it if already selected |
-| Space + backslash | Collapse/show the right panel, from normal or terminal input mode |
+| Space + backslash (normal mode) | Collapse/show the right panel |
 | q in session panel | Collapse the panel |
 | F2 in session panel | Rename terminal |
 | Delete in session panel | Close terminal; confirm before stopping a live process |
@@ -36,10 +36,11 @@ exposes the editor. The sidebar can stay collapsed while switching terminals.
 | `:TermPanelToggle` / `:TermPanelHide` | Toggle/hide the panel |
 | `:TermNew [name]` | Start a shell immediately, optionally with a name |
 
-Plain terminal arrows and digits belong to the shell or agent. Count prefixes
-work in Neovim normal mode, as with ToggleTerm. Space + arrow/backslash uses the
-existing 300 ms mapping timeout, so a literal space may briefly wait for another
-key. The footer indicates when more content is above or below the viewport.
+Plain terminal arrows, digits and spaces belong to the shell or agent; no
+leader maps exist in terminal input mode, so a space is sent immediately. Leave
+terminal input with Ctrl + backslash then Ctrl + n, or Ctrl + backtick, and the
+Space maps apply. Count prefixes work in Neovim normal mode, as with ToggleTerm.
+The footer indicates when more content is above or below the viewport.
 
 ### Apply an update without restarting agents
 
