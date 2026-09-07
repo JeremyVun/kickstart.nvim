@@ -76,10 +76,10 @@ function M.update_title()
   end)
 end
 
-local function sorted(v)
+local function sorted(v, resort)
   local order, included = {}, {}
   -- Freeze the visual order, not the statuses, while the user navigates.
-  if api.nvim_get_current_win() == v.panel then
+  if not resort and api.nvim_get_current_win() == v.panel then
     for _, id in ipairs(v.order) do
       if sessions[id] then
         order[#order + 1], included[id] = id, true
@@ -164,7 +164,7 @@ local function watch(s)
   })
 end
 
-function M.render(v)
+function M.render(v, resort)
   if not valid(v.panel) or not validbuf(v.buf) then
     return
   end
@@ -181,7 +181,7 @@ function M.render(v)
     end
   end
   local count = attention_count()
-  v.order = sorted(v)
+  v.order = sorted(v, resort)
   vim.wo[v.panel].winbar = ' Terminals  ' .. #v.order .. (count > 0 and ('   ' .. count .. ' need you') or '')
   if #v.order == 0 then
     add(' No terminals yet', 'TerminalPanelMuted')
@@ -530,7 +530,8 @@ function M.panel(focus)
     vim.wo[v.panel][key] = value
   end
   vim.wo[v.panel].winhighlight = 'CursorLine:TerminalPanelCursor,WinBar:Directory'
-  M.render(v)
+  -- The new split is already the current window; an opening panel has nothing to freeze.
+  M.render(v, true)
   if not focus and valid(previous) then
     api.nvim_set_current_win(previous)
   elseif focus then
@@ -867,6 +868,9 @@ function M.setup(options)
   api.nvim_create_autocmd('TermClose', {
     group = group,
     callback = function(args)
+      if not api.nvim_buf_is_valid(args.buf) then
+        return
+      end
       local id = vim.b[args.buf].terminal_panel_id
       local s = id and sessions[id]
       if s then
